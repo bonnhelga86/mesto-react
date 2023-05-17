@@ -1,23 +1,22 @@
 import Header from './Header.js';
 import Main from './Main.js';
-
+import Footer from './Footer.js';
+import PopupWithForm from './PopupWithForm.js';
 
 function App() {
   return (
     <>
-
       <Header />
-
       <Main />
+      <Footer />
 
-      {/* Начало блока Footer */}
-      <footer className="footer">
-        <p className="footer__copy">&copy; 2023 Mesto Russia</p>
-      </footer>
-      {/* Конец блока Footer */}
+      <PopupWithForm name="avatar" title="Обновить аватар" buttonValue="Сохранить" />
+      <PopupWithForm name="profile" title="Редактировать профиль" buttonValue="Сохранить" />
+      <PopupWithForm name="card" title="Новое место" buttonValue="Создать" />
+      <PopupWithForm name="delete" title="Вы уверены?" buttonValue="Да" />
 
       {/* Начало блока Popup-profile */}
-      <div className="popup popup-profile">
+      {/* <div className="popup popup-profile">
         <div className="popup__container popup__container_type_form">
           <button className="popup__close" type="button" aria-label="Закрыть"></button>
           <h2 className="popup__title">Редактировать профиль</h2>
@@ -45,7 +44,7 @@ function App() {
             <button className="button popup__button">Сохранить</button>
           </form>
         </div>
-      </div>
+      </div> */}
       {/* Конец блока Popup-profile */}
 
       {/* Начало блока Popup-card */}
