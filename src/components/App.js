@@ -1,4 +1,6 @@
 import Header from './Header.js';
+import Main from './Main.js';
+
 
 function App() {
   return (
@@ -6,32 +8,7 @@ function App() {
 
       <Header />
 
-      {/* Начало блока Main */}
-      <main className="content">
-        {/* Начало секции Profile */}
-          <section className="profile">
-            <div className="profile__content">
-              <div className="profile__wrap-image">
-                <img src="#" alt="" className="profile__image" />
-              </div>
-
-              <div className="profile__info">
-                <button className="profile__edit" type="button" aria-label="Редактировать"></button>
-                <h1 className="profile__name"></h1>
-                <p className="profile__profession"></p>
-              </div>
-            </div>
-            <button className="button profile__button" type="button" aria-label="Добавить"></button>
-          </section>
-        {/* Конец секции Profile */}
-
-        {/* Начало секции Elements */}
-        <section className="elements">
-          <ul className="elements__list-item"></ul>
-        </section>
-        {/* Конец секции Elements */}
-      </main>
-      {/* Конец блока Main */}
+      <Main />
 
       {/* Начало блока Footer */}
       <footer className="footer">
