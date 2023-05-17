@@ -1,14 +1,10 @@
-import logo from '../images/logo.svg';
+import Header from './Header.js';
 
 function App() {
   return (
     <>
 
-      {/* Начало блока Header */}
-      <header className="header">
-        <img src={logo} alt="Логотип Mesto" className="logo" />
-      </header>
-      {/* Конец блока Header */}
+      <Header />
 
       {/* Начало блока Main */}
       <main className="content">
