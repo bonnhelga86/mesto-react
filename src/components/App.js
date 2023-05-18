@@ -1,17 +1,50 @@
+import React from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
+import ImagePopup from './ImagePopup.js';
 
 function App() {
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+
+  function handleEditAvatarClick() {
+    setIsEditAvatarPopupOpen(true);
+  }
+
+  function handleEditProfileClick() {
+    setIsEditProfilePopupOpen(true);
+  }
+
+  function handleAddPlaceClick() {
+    setIsAddPlacePopupOpen(true);
+  }
+
+  function closeAllPopups() {
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+  }
+
   return (
     <>
       <Header />
-      <Main />
+      <Main 
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+      />
       <Footer />
 
-      <PopupWithForm name="avatar" title="Обновить аватар" buttonValue="Сохранить">
+      <PopupWithForm 
+        name="avatar" 
+        title="Обновить аватар" 
+        buttonValue="Сохранить"
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           name="avatar-link"
           type="url"
@@ -22,7 +55,13 @@ function App() {
         <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
       </PopupWithForm>
 
-      <PopupWithForm name="profile" title="Редактировать профиль" buttonValue="Сохранить">
+      <PopupWithForm 
+        name="profile" 
+        title="Редактировать профиль" 
+        buttonValue="Сохранить"
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           name="profile-name"
           type="text"
@@ -45,7 +84,13 @@ function App() {
         <span className="form__text-error form__text-error_type_profile-profession"></span>
       </PopupWithForm>
 
-      <PopupWithForm name="card" title="Новое место" buttonValue="Создать">
+      <PopupWithForm 
+        name="card" 
+        title="Новое место" 
+        buttonValue="Создать"
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           name="card-name"
           type="text"
@@ -70,21 +115,7 @@ function App() {
 
       </PopupWithForm>
 
-      <PopupWithImage />
-
-      {/* Начало блока template */}
-      <template id="elements__template">
-        <li className="elements__item">
-          <button className="elements__trash" type="button" aria-label="Удалить"></button>
-          <img src="#" alt="#" className="elements__photo" />
-          <div className="elements__content">
-            <button className="elements__like" type="button" aria-label="Лайкнуть"></button>
-            <span className="elements__like-count"></span>
-            <h2 className="elements__title"></h2>
-          </div>
-        </li>
-      </template>
-      {/* Конец блока template */}
+      <ImagePopup />
 
     </>
   );

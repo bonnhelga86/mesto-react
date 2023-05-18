@@ -1,4 +1,4 @@
-function PopupWithImage() {
+function ImagePopup() {
   return(
     <div className="popup popup_overlay-dark popup-image">
       <div className="popup__container popup__container_type_image">
@@ -12,4 +12,4 @@ function PopupWithImage() {
   )
 }
 
-export default PopupWithImage;
+export default ImagePopup;

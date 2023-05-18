@@ -1,23 +1,55 @@
-function Main() {
-  function handleEditAvatarClick() {
-    document.querySelector('.popup-avatar').classList.add('popup_opened');
-  }
+import React from 'react';
+import api from '../utils/api.js';
 
-  function handleEditProfileClick() {
-    document.querySelector('.popup-profile').classList.add('popup_opened');
-  }
+function Main(props) {
+  const [userName, setUserName] = React.useState();
+  const [userDescription, setUserDescription] = React.useState();
+  const [userAvatar, setUserAvatar] = React.useState();
+  const [cards, setCards] = React.useState([]);
 
-  function handleAddPlaceClick() {
-    document.querySelector('.popup-card').classList.add('popup_opened');
-  }
+  React.useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cardsData]) => {
+          setUserName(userData.name);
+          setUserDescription(userData.about);
+          setUserAvatar(userData.avatar);
 
+          setCards(cardsData);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }, [])
+
+  function renderCards() {
+    const arrayOfCard = [];
+
+    cards.forEach(card => {
+      const elem =  (
+        <li className="elements__item" key={card._id}>
+          <button className="elements__trash" type="button" aria-label="Удалить"></button>
+          <img src={card.link} alt={card.name} className="elements__photo" />
+          <div className="elements__content">
+            <button className="elements__like" type="button" aria-label="Лайкнуть"></button>
+            <span className="elements__like-count">{card.likes.length}</span>
+            <h2 className="elements__title">{card.name}</h2>
+          </div>
+        </li>
+      )
+      arrayOfCard.push(elem);
+    })
+
+    console.log('arrayOfCard: ', arrayOfCard);
+    return arrayOfCard;
+  }
+  
   return(
     <main className="content">
       <section className="profile">
         <div className="profile__content">
 
           <div className="profile__wrap-image">
-            <img src="#" alt="" className="profile__image" onClick={handleEditAvatarClick} />
+            <img src={userAvatar} alt="" className="profile__image" onClick={props.onEditAvatar} />
           </div>
 
           <div className="profile__info">
@@ -25,10 +57,10 @@ function Main() {
               className="profile__edit" 
               type="button" 
               aria-label="Редактировать"
-              onClick={handleEditProfileClick}
+              onClick={props.onEditProfile}
             ></button>
-            <h1 className="profile__name"></h1>
-            <p className="profile__profession"></p>
+            <h1 className="profile__name">{userName}</h1>
+            <p className="profile__profession">{userDescription}</p>
           </div>
 
         </div>
@@ -36,13 +68,15 @@ function Main() {
           className="button profile__button" 
           type="button" 
           aria-label="Добавить"
-          onClick={handleAddPlaceClick}
+          onClick={props.onAddPlace}
         ></button>
       </section>
       
 
       <section className="elements">
-        <ul className="elements__list-item"></ul>
+        <ul className="elements__list-item">
+          {renderCards()}
+        </ul>
       </section>
     </main>
   )
