@@ -1,11 +1,13 @@
 import React from 'react';
 import api from '../utils/api.js';
+import Card from './Card.js';
 
 function Main(props) {
   const [userName, setUserName] = React.useState();
   const [userDescription, setUserDescription] = React.useState();
   const [userAvatar, setUserAvatar] = React.useState();
   const [cards, setCards] = React.useState([]);
+  const [listCard, setListCard] = React.useState([]);
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -21,28 +23,22 @@ function Main(props) {
         });
   }, [])
 
-  function renderCards() {
-    const arrayOfCard = [];
+  React.useEffect(() => {
+    setListCard(() => {
+      const elementsCards = [];
 
-    cards.forEach(card => {
-      const elem =  (
-        <li className="elements__item" key={card._id}>
-          <button className="elements__trash" type="button" aria-label="Удалить"></button>
-          <img src={card.link} alt={card.name} className="elements__photo" />
-          <div className="elements__content">
-            <button className="elements__like" type="button" aria-label="Лайкнуть"></button>
-            <span className="elements__like-count">{card.likes.length}</span>
-            <h2 className="elements__title">{card.name}</h2>
-          </div>
-        </li>
-      )
-      arrayOfCard.push(elem);
-    })
+      cards.forEach(card => {
+        const element =  <Card key={card._id} cardInfo={card} onCardClick={props.onCardClick} />
+        elementsCards.push(element);
+      })
+      return elementsCards;
+    });
+  }, [cards])
 
-    console.log('arrayOfCard: ', arrayOfCard);
-    return arrayOfCard;
+  function handleEditProfileClick() {
+    props.onEditProfile(userName, userDescription);
   }
-  
+
   return(
     <main className="content">
       <section className="profile">
@@ -57,7 +53,7 @@ function Main(props) {
               className="profile__edit" 
               type="button" 
               aria-label="Редактировать"
-              onClick={props.onEditProfile}
+              onClick={handleEditProfileClick}
             ></button>
             <h1 className="profile__name">{userName}</h1>
             <p className="profile__profession">{userDescription}</p>
@@ -75,7 +71,7 @@ function Main(props) {
 
       <section className="elements">
         <ul className="elements__list-item">
-          {renderCards()}
+          {listCard}
         </ul>
       </section>
     </main>
