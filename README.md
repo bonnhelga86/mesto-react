@@ -12,4 +12,4 @@
 * Java Script
 * React
 
-Ссылка на проект [Mesto Russia](https://bonnhelga86.github.io/project_mesto_russia_2023/) на __GitHub Pages__.
+Ссылка на проект [Mesto Russia](https://bonnhelga86.github.io/mesto-react/) на __GitHub Pages__.
