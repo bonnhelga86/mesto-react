@@ -12,7 +12,6 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState({name: '', about: ''});
 
-
   function handleCardClick(card) {
     setSelectedCard(card);
   }
