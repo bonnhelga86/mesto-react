@@ -7,7 +7,6 @@ function Main(props) {
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
-  const [listCard, setListCard] = React.useState([]);
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -23,18 +22,6 @@ function Main(props) {
         });
   }, [])
 
-  React.useEffect(() => {
-    setListCard(() => {
-      const elementsCards = [];
-
-      cards.forEach(card => {
-        const element =  <Card key={card._id} cardInfo={card} onCardClick={props.onCardClick} />
-        elementsCards.push(element);
-      })
-      return elementsCards;
-    });
-  }, [cards])
-
   function handleEditProfileClick() {
     props.onEditProfile(userName, userDescription);
   }
@@ -49,9 +36,9 @@ function Main(props) {
           </div>
 
           <div className="profile__info">
-            <button 
-              className="profile__edit" 
-              type="button" 
+            <button
+              className="profile__edit"
+              type="button"
               aria-label="Редактировать"
               onClick={handleEditProfileClick}
             ></button>
@@ -61,17 +48,17 @@ function Main(props) {
 
         </div>
         <button
-          className="button profile__button" 
-          type="button" 
+          className="button profile__button"
+          type="button"
           aria-label="Добавить"
           onClick={props.onAddPlace}
         ></button>
       </section>
-      
+
 
       <section className="elements">
         <ul className="elements__list-item">
-          {listCard}
+          {cards.map(card => <Card key={card._id} cardInfo={card} onCardClick={props.onCardClick} />)}
         </ul>
       </section>
     </main>

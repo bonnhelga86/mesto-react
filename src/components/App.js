@@ -64,7 +64,7 @@ function App() {
         title="Обновить аватар"
         buttonValue="Сохранить"
         isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}
+        onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
       >
         <input

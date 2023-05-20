@@ -2,7 +2,7 @@ import React from 'react';
 
 function ImagePopup(props) {
 
-  const cardIsEmpty = (Object.keys(props.card).length === 0) && true;
+  const cardIsEmpty = (Object.keys(props.card).length === 0);
 
   React.useEffect(() => {
     if (cardIsEmpty) return;
@@ -28,7 +28,7 @@ function ImagePopup(props) {
           onClick={props.onClose}
         ></button>
         <figure className="popup-image__wrap">
-          <img src={props.card.link} alt="#" className="popup-image__photo" />
+          <img src={props.card.link} alt={props.card.name} className="popup-image__photo" />
           <figcaption className="popup-image__caption">{props.card.name}</figcaption>
         </figure>
       </div>
