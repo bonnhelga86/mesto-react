@@ -9,7 +9,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
   const [userInfo, setUserInfo] = React.useState({name: '', about: ''});
 
   function handleCardClick(card) {
@@ -33,7 +33,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard({});
   }
 
   function handleEscClose(event) {
@@ -48,18 +48,10 @@ function App() {
     }
   }
 
-  React.useEffect(() => {
-    document.addEventListener('keyup', handleEscClose);
-
-    return() => {
-      document.removeEventListener('keyup', handleEscClose);
-    }
-  }, [isEditAvatarPopupOpen, isEditProfilePopupOpen, isAddPlacePopupOpen, selectedCard])
-
   return (
     <>
       <Header />
-      <Main 
+      <Main
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
@@ -67,12 +59,13 @@ function App() {
       />
       <Footer />
 
-      <PopupWithForm 
-        name="avatar" 
-        title="Обновить аватар" 
+      <PopupWithForm
+        name="avatar"
+        title="Обновить аватар"
         buttonValue="Сохранить"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        onEscapeClose={handleEscClose}
       >
         <input
           name="avatar-link"
@@ -84,12 +77,13 @@ function App() {
         <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
       </PopupWithForm>
 
-      <PopupWithForm 
-        name="profile" 
-        title="Редактировать профиль" 
+      <PopupWithForm
+        name="profile"
+        title="Редактировать профиль"
         buttonValue="Сохранить"
         isOpen={isEditProfilePopupOpen}
         onClose={handleCloseClick}
+        onEscapeClose={handleEscClose}
       >
         <input
           name="profile-name"
@@ -115,12 +109,13 @@ function App() {
         <span className="form__text-error form__text-error_type_profile-profession"></span>
       </PopupWithForm>
 
-      <PopupWithForm 
-        name="card" 
-        title="Новое место" 
+      <PopupWithForm
+        name="card"
+        title="Новое место"
         buttonValue="Создать"
         isOpen={isAddPlacePopupOpen}
         onClose={handleCloseClick}
+        onEscapeClose={handleEscClose}
       >
         <input
           name="card-name"
@@ -144,7 +139,7 @@ function App() {
 
       <PopupWithForm name="delete" title="Вы уверены?" buttonValue="Да" onClose={handleCloseClick} />
 
-      <ImagePopup card={selectedCard} name='image' onClose={handleCloseClick} />
+      <ImagePopup card={selectedCard} name='image' onClose={handleCloseClick} onEscapeClose={handleEscClose} />
 
     </>
   );

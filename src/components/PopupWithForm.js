@@ -1,14 +1,26 @@
+import React from 'react';
+
 function PopupWithForm(props) {
 
+  React.useEffect(() => {
+    if (!props.isOpen) return;
+
+    document.addEventListener('keyup', props.onEscapeClose);
+
+    return() => {
+      document.removeEventListener('keyup', props.onEscapeClose);
+    }
+  }, [props.isOpen])
+
   return(
-    <div 
+    <div
       className={props.isOpen ? `popup popup-${props.name} popup_opened` : `popup popup-${props.name}`}
       onClick={props.onClose}
     >
       <div className="popup__container popup__container_type_form">
-        <button 
-          className="popup__close" 
-          type="button" 
+        <button
+          className="popup__close"
+          type="button"
           aria-label="Закрыть"
           onClick={props.onClose}
         ></button>
