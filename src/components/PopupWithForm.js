@@ -1,33 +1,33 @@
 import React from 'react';
 
-function PopupWithForm(props) {
+function PopupWithForm({ name, title, buttonValue, isOpen, onClose, onEscapeClose, children }) {
 
   React.useEffect(() => {
-    if (!props.isOpen) return;
+    if (!isOpen) return;
 
-    document.addEventListener('keyup', props.onEscapeClose);
+    document.addEventListener('keyup', onEscapeClose);
 
     return() => {
-      document.removeEventListener('keyup', props.onEscapeClose);
+      document.removeEventListener('keyup', onEscapeClose);
     }
-  }, [props.isOpen])
+  }, [isOpen])
 
   return(
     <div
-      className={props.isOpen ? `popup popup-${props.name} popup_opened` : `popup popup-${props.name}`}
-      onClick={props.onClose}
+      className={isOpen ? `popup popup-${name} popup_opened` : `popup popup-${name}`}
+      onClick={onClose}
     >
       <div className="popup__container popup__container_type_form">
         <button
           className="popup__close"
           type="button"
           aria-label="Закрыть"
-          onClick={props.onClose}
+          onClick={onClose}
         ></button>
-        <h2 className="popup__title">{props.title}</h2>
-        <form className={`form popup-${props.name}__form`} name={`${props.name}-form`} noValidate>
-          {props.children}
-          <button className="button popup__button">{props.buttonValue}</button>
+        <h2 className="popup__title">{title}</h2>
+        <form className={`form popup-${name}__form`} name={`${name}-form`} noValidate>
+          {children}
+          <button className="button popup__button">{buttonValue}</button>
         </form>
       </div>
     </div>
