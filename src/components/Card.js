@@ -1,8 +1,14 @@
-function Card({ cardInfo, onCardClick }) {
+import React from 'react';
+import CurrentUserContext from '../contexts/CurrentUserContext.js';
+
+function Card({ cardInfo, onCardClick, onDeleteCard }) {
+  const currentUser = React.useContext(CurrentUserContext);
+  const isOwn = cardInfo.owner._id === currentUser._id;
+  const isLiked = cardInfo.likes.some(like => like._id === currentUser._id);
 
   return(
     <li className="elements__item">
-      <button className="elements__trash" type="button" aria-label="Удалить"></button>
+      {isOwn && <button className="elements__trash" onClick={onDeleteCard} type="button" aria-label="Удалить"></button>}
       <img
         src={cardInfo.link}
         alt={cardInfo.name}
@@ -10,7 +16,11 @@ function Card({ cardInfo, onCardClick }) {
         onClick={() => onCardClick(cardInfo)}
       />
       <div className="elements__content">
-        <button className="elements__like" type="button" aria-label="Лайкнуть"></button>
+        <button
+          className={isLiked ? `elements__like elements__like_type_active` : `elements__like`}
+          type="button"
+          aria-label="Лайкнуть">
+        </button>
         <span className="elements__like-count">{cardInfo.likes.length}</span>
         <h2 className="elements__title">{cardInfo.name}</h2>
       </div>

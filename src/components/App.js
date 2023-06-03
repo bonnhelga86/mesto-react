@@ -4,35 +4,52 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import api from '../utils/api.js';
+import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
+
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [userInfo, setUserInfo] = React.useState({name: '', about: ''});
+  const [currentUser, setCurrentUser] = React.useState({});
 
-  function handleCardClick(card) {
-    setSelectedCard(card);
-  }
+  React.useEffect(() => {
+    api.getUserInfo()
+        .then(userData => {
+          setCurrentUser(userData);
+        })
+        .catch(error => {
+          console.error(error);
+        })
+  }, [])
 
-  function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true);
-  }
+  // ---------------  Заменить 4 функции одной?  ----------------
+  // function handleCardClick(card) {
+  //   setSelectedCard(card);
+  // }
 
-  function handleEditProfileClick(userName, userDescription) {
-    setUserInfo({name: userName, about: userDescription});
-    setIsEditProfilePopupOpen(true);
-  }
+  // function handleEditAvatarClick() {
+  //   setIsEditAvatarPopupOpen(true);
+  // }
 
-  function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true);
-  }
+  // function handleEditProfileClick() {
+  //   setIsEditProfilePopupOpen(true);
+  // }
+
+  // function handleAddPlaceClick() {
+  //   setIsAddPlacePopupOpen(true);
+  // }
+
+// ------------------  End  ------------------------
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsDeleteCardPopupOpen(false);
     setSelectedCard({});
   }
 
@@ -49,13 +66,14 @@ function App() {
   }
 
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
-        onEditAvatar={handleEditAvatarClick}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onCardClick={handleCardClick}
+        onEditAvatar={setIsEditAvatarPopupOpen}
+        onEditProfile={setIsEditProfilePopupOpen}
+        onAddPlace={setIsAddPlacePopupOpen}
+        onCardClick={setSelectedCard}
+        onDeleteCard={setIsDeleteCardPopupOpen}
       />
       <Footer />
 
@@ -88,7 +106,7 @@ function App() {
         <input
           name="profile-name"
           type="text"
-          defaultValue={userInfo.name}
+          defaultValue={currentUser.name}
           placeholder="Ваше имя"
           className="form__input"
           minLength="2"
@@ -99,7 +117,7 @@ function App() {
         <input
           name="profile-profession"
           type="text"
-          defaultValue={userInfo.about}
+          defaultValue={currentUser.about}
           placeholder="Ваш тип деятельности"
           className="form__input"
           minLength="2"
@@ -137,11 +155,18 @@ function App() {
         <span className="form__text-error form__text-error_type_card-link"></span>
       </PopupWithForm>
 
-      <PopupWithForm name="delete" title="Вы уверены?" buttonValue="Да" onClose={handleCloseClick} />
+      <PopupWithForm
+        name="delete"
+        title="Вы уверены?"
+        buttonValue="Да"
+        isOpen={isDeleteCardPopupOpen}
+        onClose={handleCloseClick}
+        onEscapeClose={handleEscClose}
+      />
 
       <ImagePopup card={selectedCard} name='image' onClose={handleCloseClick} onEscapeClose={handleEscClose} />
 
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 
