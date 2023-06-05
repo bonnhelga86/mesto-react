@@ -4,6 +4,7 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
@@ -48,6 +49,17 @@ function App() {
   // }
 
 // ------------------  End  ------------------------
+
+  function handleUpdateAvatar(avatar) {
+    api.setUserAvatar(avatar)
+        .then(userData => {
+          setCurrentUser(userData);
+          closeAllPopups();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }
 
   function handleUpdateUser(name, about) {
     api.setUserInfo(name, about)
@@ -122,23 +134,12 @@ function App() {
       />
       <Footer />
 
-      <PopupWithForm
-        name="avatar"
-        title="Обновить аватар"
-        buttonValue="Сохранить"
+      <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
+        onUpdateAvatar={handleUpdateAvatar}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
-      >
-        <input
-          name="avatar-link"
-          type="url"
-          placeholder="ссылка на аватар"
-          className="form__input"
-          required
-        />
-        <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
-      </PopupWithForm>
+      />
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
