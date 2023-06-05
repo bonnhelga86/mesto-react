@@ -3,6 +3,7 @@ import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
@@ -47,6 +48,17 @@ function App() {
   // }
 
 // ------------------  End  ------------------------
+
+  function handleUpdateUser(name, about) {
+    api.setUserInfo(name, about)
+        .then(userData => {
+          setCurrentUser(userData);
+          closeAllPopups();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }
 
   function handleCardLike(card, isLiked) {
     api.changeLikeCardStatus(card._id, !isLiked)
@@ -128,37 +140,12 @@ function App() {
         <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
       </PopupWithForm>
 
-      <PopupWithForm
-        name="profile"
-        title="Редактировать профиль"
-        buttonValue="Сохранить"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
+        onUpdateUser={handleUpdateUser}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
-      >
-        <input
-          name="profile-name"
-          type="text"
-          defaultValue={currentUser.name}
-          placeholder="Ваше имя"
-          className="form__input"
-          minLength="2"
-          maxLength="40"
-          required
-        />
-        <span className="form__text-error form__text-error_type_profile-name">Вы пропустили это поле</span>
-        <input
-          name="profile-profession"
-          type="text"
-          defaultValue={currentUser.about}
-          placeholder="Ваш тип деятельности"
-          className="form__input"
-          minLength="2"
-          maxLength="200"
-          required
-        />
-        <span className="form__text-error form__text-error_type_profile-profession"></span>
-      </PopupWithForm>
+      />
 
       <PopupWithForm
         name="card"

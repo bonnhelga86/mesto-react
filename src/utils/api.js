@@ -70,7 +70,7 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  saveUserInfo(name, about) {
+  setUserInfo(name, about) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
