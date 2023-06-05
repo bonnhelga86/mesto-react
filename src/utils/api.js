@@ -27,7 +27,7 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  saveCard(name, link) {
+  setCard(name, link) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,

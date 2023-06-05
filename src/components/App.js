@@ -5,6 +5,7 @@ import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
@@ -31,25 +32,6 @@ function App() {
         })
   }, [])
 
-  // ---------------  Заменить 4 функции одной?  ----------------
-  // function handleCardClick(card) {
-  //   setSelectedCard(card);
-  // }
-
-  // function handleEditAvatarClick() {
-  //   setIsEditAvatarPopupOpen(true);
-  // }
-
-  // function handleEditProfileClick() {
-  //   setIsEditProfilePopupOpen(true);
-  // }
-
-  // function handleAddPlaceClick() {
-  //   setIsAddPlacePopupOpen(true);
-  // }
-
-// ------------------  End  ------------------------
-
   function handleUpdateAvatar(avatar) {
     api.setUserAvatar(avatar)
         .then(userData => {
@@ -72,7 +54,18 @@ function App() {
         });
   }
 
-  function handleCardLike(card, isLiked) {
+  function handleAddPlace(name, link) {
+    api.setCard(name, link)
+        .then(newCard => {
+          setCards([newCard, ...cards]);
+          closeAllPopups();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }
+
+  function handleLikeCard(card, isLiked) {
     api.changeLikeCardStatus(card._id, !isLiked)
         .then((newCard) => {
           setCards((cards) => cards.map((oldCard) => oldCard._id === card._id ? newCard : oldCard));
@@ -82,18 +75,18 @@ function App() {
         });
   }
 
-  function handleCardDeletePopupOpen(cardId) {
+  function handleDeleteCardPopupOpen(cardId) {
     setSelectedDeleteCard(cardId);
     setIsDeleteCardPopupOpen(true);
   }
 
-  function handleCardDelete(event) {
+  function handleDeleteCard(event) {
     event.preventDefault();
-
     api.deleteCard(selectedDeleteCard)
         .then(() => {
           setCards(cards.filter(card => card._id !== selectedDeleteCard));
           setSelectedDeleteCard(null);
+          closeAllPopups();
         })
         .catch(error => {
           console.error(error);
@@ -129,8 +122,8 @@ function App() {
         onEditProfile={setIsEditProfilePopupOpen}
         onAddPlace={setIsAddPlacePopupOpen}
         onCardClick={setSelectedCard}
-        onCardLike={handleCardLike}
-        onDeleteCard={handleCardDeletePopupOpen}
+        onCardLike={handleLikeCard}
+        onDeleteCard={handleDeleteCardPopupOpen}
       />
       <Footer />
 
@@ -148,40 +141,19 @@ function App() {
         onEscapeClose={handleEscClose}
       />
 
-      <PopupWithForm
-        name="card"
-        title="Новое место"
-        buttonValue="Создать"
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
+        onAddPlace={handleAddPlace}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
-      >
-        <input
-          name="card-name"
-          type="text"
-          placeholder="Название"
-          className="form__input"
-          minLength="2"
-          maxLength="30"
-          required
-        />
-        <span className="form__text-error form__text-error_type_card-name"></span>
-        <input
-          name="card-link"
-          type="url"
-          placeholder="Ссылка на картинку"
-          className="form__input"
-          required
-        />
-        <span className="form__text-error form__text-error_type_card-link"></span>
-      </PopupWithForm>
+      />
 
       <PopupWithForm
         name="delete"
         title="Вы уверены?"
         buttonValue="Да"
         isOpen={isDeleteCardPopupOpen}
-        onSubmitForm={handleCardDelete}
+        onSubmitForm={handleDeleteCard}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
       />

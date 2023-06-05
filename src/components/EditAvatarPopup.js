@@ -4,7 +4,7 @@ import PopupWithForm from './PopupWithForm.js';
 function EditAvatarPopup({ isOpen, onUpdateAvatar, onClose, onEscapeClose }) {
   const avatarRef = React.useRef();
 
-  function handleAvatarUpdate(event) {
+  function handleSubmit(event) {
     event.preventDefault();
     const avatar = avatarRef.current.value;
     avatarRef.current.value = '';
@@ -13,24 +13,24 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onClose, onEscapeClose }) {
 
   return(
     <PopupWithForm
-        name="avatar"
-        title="Обновить аватар"
-        buttonValue="Сохранить"
-        isOpen={isOpen}
-        onSubmitForm={handleAvatarUpdate}
-        onClose={onClose}
-        onEscapeClose={onEscapeClose}
-      >
-        <input
-          ref={avatarRef}
-          name="avatar-link"
-          type="url"
-          placeholder="ссылка на аватар"
-          className="form__input"
-          required
-        />
-        <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
-      </PopupWithForm>
+      name="avatar"
+      title="Обновить аватар"
+      buttonValue="Сохранить"
+      isOpen={isOpen}
+      onSubmitForm={handleSubmit}
+      onClose={onClose}
+      onEscapeClose={onEscapeClose}
+    >
+      <input
+        ref={avatarRef}
+        name="avatar-link"
+        type="url"
+        placeholder="ссылка на аватар"
+        className="form__input"
+        required
+      />
+      <span className="form__text-error form__text-error_type_avatar-link">Вы пропустили это поле</span>
+    </PopupWithForm>
   )
 }
 

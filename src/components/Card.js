@@ -10,7 +10,7 @@ function Card({ cardInfo, onCardClick, onCardLike, onDeleteCard }) {
     <li className="elements__item">
       {isOwn && <button
                   className="elements__trash"
-                  onClick={onDeleteCard}
+                  onClick={() => onDeleteCard(cardInfo._id)}
                   type="button"
                   aria-label="Удалить"
                 ></button>
