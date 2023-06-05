@@ -8,7 +8,13 @@ function Card({ cardInfo, onCardClick, onCardLike, onDeleteCard }) {
 
   return(
     <li className="elements__item">
-      {isOwn && <button className="elements__trash" onClick={onDeleteCard} type="button" aria-label="Удалить"></button>}
+      {isOwn && <button
+                  className="elements__trash"
+                  onClick={onDeleteCard}
+                  type="button"
+                  aria-label="Удалить"
+                ></button>
+      }
       <img
         src={cardInfo.link}
         alt={cardInfo.name}

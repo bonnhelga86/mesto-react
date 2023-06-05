@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PopupWithForm({ name, title, buttonValue, isOpen, onClose, onEscapeClose, children }) {
+function PopupWithForm({ name, title, buttonValue, isOpen, onSubmitForm, onClose, onEscapeClose, children }) {
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -25,7 +25,12 @@ function PopupWithForm({ name, title, buttonValue, isOpen, onClose, onEscapeClos
           onClick={onClose}
         ></button>
         <h2 className="popup__title">{title}</h2>
-        <form className={`form popup-${name}__form`} name={`${name}-form`} noValidate>
+        <form
+          className={`form popup-${name}__form`}
+          onSubmit={onSubmitForm}
+          name={`${name}-form`}
+          noValidate
+        >
           {children}
           <button className="button popup__button">{buttonValue}</button>
         </form>

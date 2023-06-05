@@ -14,6 +14,7 @@ function App() {
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
 
   const [selectedCard, setSelectedCard] = React.useState({});
+  const [selectedDeleteCard, setSelectedDeleteCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
@@ -57,6 +58,24 @@ function App() {
         });
   }
 
+  function handleCardDeletePopupOpen(cardId) {
+    setSelectedDeleteCard(cardId);
+    setIsDeleteCardPopupOpen(true);
+  }
+
+  function handleCardDelete(event) {
+    event.preventDefault();
+
+    api.deleteCard(selectedDeleteCard)
+        .then(() => {
+          setCards(cards.filter(card => card._id !== selectedDeleteCard));
+          setSelectedDeleteCard(null);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -87,7 +106,7 @@ function App() {
         onAddPlace={setIsAddPlacePopupOpen}
         onCardClick={setSelectedCard}
         onCardLike={handleCardLike}
-        onDeleteCard={setIsDeleteCardPopupOpen}
+        onDeleteCard={handleCardDeletePopupOpen}
       />
       <Footer />
 
@@ -174,6 +193,7 @@ function App() {
         title="Вы уверены?"
         buttonValue="Да"
         isOpen={isDeleteCardPopupOpen}
+        onSubmitForm={handleCardDelete}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
       />
