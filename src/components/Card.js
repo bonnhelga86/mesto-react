@@ -1,7 +1,7 @@
 import React from 'react';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-function Card({ cardInfo, onCardClick, onDeleteCard }) {
+function Card({ cardInfo, onCardClick, onCardLike, onDeleteCard }) {
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = cardInfo.owner._id === currentUser._id;
   const isLiked = cardInfo.likes.some(like => like._id === currentUser._id);
@@ -18,6 +18,7 @@ function Card({ cardInfo, onCardClick, onDeleteCard }) {
       <div className="elements__content">
         <button
           className={isLiked ? `elements__like elements__like_type_active` : `elements__like`}
+          onClick={() => onCardLike(cardInfo, isLiked)}
           type="button"
           aria-label="Лайкнуть">
         </button>

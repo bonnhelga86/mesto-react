@@ -35,8 +35,8 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  likeCard(cardId, elementLikes) {
-    const likeAction = elementLikes.classList.contains('elements__like_type_active') ? 'DELETE' : 'PUT';
+  changeLikeCardStatus(cardId, likeStatus) {
+    const likeAction = likeStatus ? 'PUT' : 'DELETE';
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: likeAction,
       headers: {

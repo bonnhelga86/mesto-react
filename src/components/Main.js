@@ -1,21 +1,9 @@
 import React from 'react';
-import api from '../utils/api.js';
 import Card from './Card.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, onDeleteCard }) {
+function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onDeleteCard }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    api.getInitialCards()
-        .then(cardsData => {
-          setCards(cardsData);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  }, [])
 
   return(
     <main className="content">
@@ -53,6 +41,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, onDeleteCa
                                 key={card._id}
                                 cardInfo={card}
                                 onCardClick={() => onCardClick(card)}
+                                onCardLike={onCardLike}
                                 onDeleteCard={onDeleteCard}
                               />)}
         </ul>
