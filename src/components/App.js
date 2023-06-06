@@ -15,11 +15,11 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
-
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [selectedViewCard, setSelectedViewCard] = React.useState({});
   const [selectedDeleteCard, setSelectedDeleteCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -33,6 +33,7 @@ function App() {
   }, [])
 
   function handleUpdateAvatar(avatar) {
+    setIsLoading(true);
     api.setUserAvatar(avatar)
         .then(userData => {
           setCurrentUser(userData);
@@ -40,10 +41,14 @@ function App() {
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
   }
 
   function handleUpdateUser(name, about) {
+    setIsLoading(true);
     api.setUserInfo(name, about)
         .then(userData => {
           setCurrentUser(userData);
@@ -51,10 +56,14 @@ function App() {
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
   }
 
   function handleAddPlace(name, link) {
+    setIsLoading(true);
     api.setCard(name, link)
         .then(newCard => {
           setCards([newCard, ...cards]);
@@ -62,6 +71,9 @@ function App() {
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
   }
 
@@ -82,6 +94,7 @@ function App() {
 
   function handleDeleteCard(event) {
     event.preventDefault();
+    setIsLoading(true);
     api.deleteCard(selectedDeleteCard)
         .then(() => {
           setCards(cards.filter(card => card._id !== selectedDeleteCard));
@@ -90,6 +103,9 @@ function App() {
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
   }
 
@@ -98,7 +114,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
-    setSelectedCard({});
+    setSelectedViewCard({});
   }
 
   function handleEscClose(event) {
@@ -121,7 +137,7 @@ function App() {
         onEditAvatar={setIsEditAvatarPopupOpen}
         onEditProfile={setIsEditProfilePopupOpen}
         onAddPlace={setIsAddPlacePopupOpen}
-        onCardClick={setSelectedCard}
+        onCardClick={setSelectedViewCard}
         onCardLike={handleLikeCard}
         onDeleteCard={handleDeleteCardPopupOpen}
       />
@@ -132,6 +148,7 @@ function App() {
         onUpdateAvatar={handleUpdateAvatar}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
+        isLoading={isLoading}
       />
 
       <EditProfilePopup
@@ -139,6 +156,7 @@ function App() {
         onUpdateUser={handleUpdateUser}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
+        isLoading={isLoading}
       />
 
       <AddPlacePopup
@@ -146,19 +164,20 @@ function App() {
         onAddPlace={handleAddPlace}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
+        isLoading={isLoading}
       />
 
       <PopupWithForm
         name="delete"
         title="Вы уверены?"
-        buttonValue="Да"
+        buttonValue={isLoading ? 'Удаление...' : 'Да'}
         isOpen={isDeleteCardPopupOpen}
         onSubmitForm={handleDeleteCard}
         onClose={handleCloseClick}
         onEscapeClose={handleEscClose}
       />
 
-      <ImagePopup card={selectedCard} name='image' onClose={handleCloseClick} onEscapeClose={handleEscClose} />
+      <ImagePopup card={selectedViewCard} name='image' onClose={handleCloseClick} onEscapeClose={handleEscClose} />
 
     </CurrentUserContext.Provider>
   );

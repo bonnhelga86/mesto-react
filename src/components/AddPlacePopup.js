@@ -1,22 +1,25 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function AddPlacePopup({ isOpen, onAddPlace, onClose, onEscapeClose }) {
+function AddPlacePopup({ isOpen, onAddPlace, onClose, onEscapeClose, isLoading }) {
   const[name, setName] = React.useState('');
   const[link, setLink] = React.useState('');
+
+  React.useEffect(() => {
+    setName('');
+    setLink('');
+  }, [isOpen]);
 
   function handleSubmit(event) {
     event.preventDefault();
     onAddPlace(name, link);
-    setName('');
-    setLink('');
   }
 
   return(
     <PopupWithForm
         name="card"
         title="Новое место"
-        buttonValue="Создать"
+        buttonValue={isLoading ? 'Создание...' : 'Создать'}
         isOpen={isOpen}
         onSubmitForm={handleSubmit}
         onClose={onClose}
@@ -33,7 +36,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose, onEscapeClose }) {
         maxLength="30"
         required
       />
-      <span className="form__text-error form__text-error_type_card-name"></span>
+      <span className="form__text-error form__text-error_type_card-name" />
       <input
         name="card-link"
         value={link}
@@ -43,7 +46,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose, onEscapeClose }) {
         className="form__input"
         required
       />
-      <span className="form__text-error form__text-error_type_card-link"></span>
+      <span className="form__text-error form__text-error_type_card-link" />
     </PopupWithForm>
   )
 }

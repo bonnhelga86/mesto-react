@@ -20,7 +20,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onC
               type="button"
               aria-label="Редактировать"
               onClick={() => onEditProfile(true)}
-            ></button>
+            />
             <h1 className="profile__name">{currentUser.name}</h1>
             <p className="profile__profession">{currentUser.about}</p>
           </div>
@@ -31,7 +31,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onC
           type="button"
           aria-label="Добавить"
           onClick={() => onAddPlace(true)}
-        ></button>
+        />
       </section>
 
 

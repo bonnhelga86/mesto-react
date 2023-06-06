@@ -13,7 +13,7 @@ function Card({ cardInfo, onCardClick, onCardLike, onDeleteCard }) {
                   onClick={() => onDeleteCard(cardInfo._id)}
                   type="button"
                   aria-label="Удалить"
-                ></button>
+                />
       }
       <img
         src={cardInfo.link}
@@ -26,8 +26,8 @@ function Card({ cardInfo, onCardClick, onCardLike, onDeleteCard }) {
           className={isLiked ? `elements__like elements__like_type_active` : `elements__like`}
           onClick={() => onCardLike(cardInfo, isLiked)}
           type="button"
-          aria-label="Лайкнуть">
-        </button>
+          aria-label="Лайкнуть"
+        />
         <span className="elements__like-count">{cardInfo.likes.length}</span>
         <h2 className="elements__title">{cardInfo.name}</h2>
       </div>
