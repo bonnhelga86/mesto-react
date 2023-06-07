@@ -1,38 +1,25 @@
 import React from 'react';
+import Popup from './Popup.js';
 
 function ImagePopup({ card, name, onClose, onEscapeClose }) {
 
-  const cardIsEmpty = (Object.keys(card).length === 0);
-
-  React.useEffect(() => {
-    if (cardIsEmpty) return;
-
-    document.addEventListener('keyup', onEscapeClose);
-
-    return() => {
-      document.removeEventListener('keyup', onEscapeClose);
-    }
-  }, [cardIsEmpty])
+  const cardIsNotEmpty = (Object.keys(card).length !== 0);
 
   return(
-    <div className={(cardIsEmpty)
-                  ? `popup popup_overlay-dark popup-${name}`
-                  : `popup popup_overlay-dark popup-${name} popup_opened`}
-        onClick={onClose}
+    <Popup
+      isOpen={cardIsNotEmpty}
+      onEscapeClose={onEscapeClose}
+      name={name}
+      onClose={onClose}
+      type='image'
+      extraClassName='popup_overlay-dark'
     >
-      <div className="popup__container popup__container_type_image">
-        <button
-          className="popup__close"
-          type="button"
-          aria-label="Закрыть"
-          onClick={onClose}
-        />
-        <figure className="popup-image__wrap">
-          <img src={card.link} alt={card.name} className="popup-image__photo" />
-          <figcaption className="popup-image__caption">{card.name}</figcaption>
-        </figure>
-      </div>
-    </div>
+      <figure className="popup-image__wrap">
+        <img src={card.link} alt={card.name} className="popup-image__photo" />
+        <figcaption className="popup-image__caption">{card.name}</figcaption>
+      </figure>
+    </Popup>
+
   )
 }
 
