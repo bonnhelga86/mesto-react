@@ -13,10 +13,7 @@ function Popup({ isOpen, onEscapeClose, name, onClose, extraClassName='', type, 
 
   return(
     <div
-        className={isOpen
-                    ? `popup ${extraClassName} popup-${name} popup_opened`
-                    : `popup ${extraClassName} popup-${name}`
-                  }
+        className={`popup popup-${name} ${extraClassName} ${isOpen ? "popup_opened" : ""}`}
         onClick={onClose}
     >
       <div className={`popup__container popup__container_type_${type}`}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -132,15 +133,21 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
-      <Main
-        cards={cards}
-        onEditAvatar={setIsEditAvatarPopupOpen}
-        onEditProfile={setIsEditProfilePopupOpen}
-        onAddPlace={setIsAddPlacePopupOpen}
-        onCardClick={setSelectedViewCard}
-        onCardLike={handleLikeCard}
-        onDeleteCard={handleDeleteCardPopupOpen}
-      />
+
+      <Routes>
+        <Route path="/" element={
+          <Main
+            cards={cards}
+            onEditAvatar={setIsEditAvatarPopupOpen}
+            onEditProfile={setIsEditProfilePopupOpen}
+            onAddPlace={setIsAddPlacePopupOpen}
+            onCardClick={setSelectedViewCard}
+            onCardLike={handleLikeCard}
+            onDeleteCard={handleDeleteCardPopupOpen}
+          />
+        } />
+      </Routes>
+
       <Footer />
 
       <EditAvatarPopup
